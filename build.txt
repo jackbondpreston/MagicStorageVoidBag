@@ -1,3 +1,8 @@
 displayName = Magic Storage Void Bag
 author = jack
 version = 0.1
+modReferences = MagicStorage
+dllReferences = MMHOOK_MagicStorage
+sortAfter = MagicStorage
+includeSource = true
+homepage = https://github.com/jackbondpreston/MagicStorageVoidBag

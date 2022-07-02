@@ -1,0 +1,7 @@
+﻿Mods: {
+	MagicStorageVoidBag: {
+		ItemName: {
+			MSVoidBag: Magic Void Bag
+		}
+	}
+}
