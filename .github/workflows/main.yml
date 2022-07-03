@@ -18,7 +18,7 @@ jobs:
         uses: loopwerk/tag-changelog@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          exclude_types: other,doc,chore
+          config_file: .github/workflows/tag_changelog_config.js
 
       - name: Create release
         uses: actions/create-release@latest
@@ -26,5 +26,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: ${{ github.ref }}
           body: ${{ steps.changelog.outputs.changes }}
