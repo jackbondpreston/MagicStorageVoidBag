@@ -3,5 +3,13 @@
 		ItemName: {
 			MSVoidBag: Magic Void Bag
 		}
+		ItemTooltip: {
+			MSVoidBag:
+			'''
+			<right> Storage Heart to store location
+			Currently not set to any location
+			'''
+		}
 	}
+
 }

@@ -68,8 +68,6 @@ namespace MagicStorageVoidBag.Items {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient<PortableAccess>();
             recipe.AddIngredient(ItemID.VoidLens);
-            recipe.AddIngredient<RadiantJewel>();
-            recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }
     }

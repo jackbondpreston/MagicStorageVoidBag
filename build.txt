@@ -1,4 +1,4 @@
-displayName = Magic Storage Void Bag
+displayName = MagicStorage Void Bag
 author = jack
 version = 0.1
 modReferences = MagicStorage
