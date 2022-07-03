@@ -1,4 +1,4 @@
-# MagicStorageVoidBag
+# MagicStorage Void Bag
 
 A mod that extends [Magic Storage](https://github.com/blushiemagic/MagicStorage).
 
