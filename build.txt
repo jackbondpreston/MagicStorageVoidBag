@@ -1,6 +1,6 @@
 displayName = MagicStorage Void Bag
 author = jack
-version = 0.1
+version = 0.2
 modReferences = MagicStorage
 dllReferences = MMHOOK_MagicStorage
 sortAfter = MagicStorage
