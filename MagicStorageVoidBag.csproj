@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\tModLoader.targets" />
+  <Import Project="../tModLoader.targets" />
   <PropertyGroup>
     <AssemblyName>MagicStorageVoidBag</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
@@ -12,10 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MagicStorage">
-      <HintPath>..\Mod Libraries\MagicStorage.dll</HintPath>
+      <HintPath>../Mod Libraries/MagicStorage.dll</HintPath>
     </Reference>
-    <Reference Include="MMHOOK_MagicStorage">
-      <HintPath>lib\MMHOOK_MagicStorage.dll</HintPath>
+    <Reference Include="MagicStorageHooks">
+      <HintPath>lib\MagicStorageHooks.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

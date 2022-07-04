@@ -1,57 +1,31 @@
-using Mono.Cecil.Cil;
-using Mono.Cecil;
-using MonoMod.Cil;
+
 using Terraria.ModLoader;
-using MagicStorageVoidBag.Items;
+using MagicStorageVoidBag.ILPatches;
+using MagicStorageVoidBag.Hooks;
 
 namespace MagicStorageVoidBag {
     public class MagicStorageVoidBag : Mod {
+        public static MagicStorageVoidBag Instance => ModContent.GetInstance<MagicStorageVoidBag>();
+
+        // IL Patches
+        private PlayerUpdatePatch playerUpdatePatch = new();
+
         public override void Load() {
-            IL.MagicStorage.Components.StorageHeart.RightClick += HeartRightClickPatch;
+            IL.Terraria.Player.Update += playerUpdatePatch.Patch;
+
+            On.Terraria.Player.GetItem_VoidVault += GetItemVoidVaultHook.Hook;
+            On.Terraria.Player.ItemSpaceForCofveve += ItemSpaceForCofveveHook.Hook;
+            On.MagicStorage.Components.StorageHeart.RightClick += StorageHeartRightClickHook.Hook;
         }
 
         public override void Unload() {
+            IL.Terraria.Player.Update -= playerUpdatePatch.Patch;
+
+            On.Terraria.Player.GetItem_VoidVault -= GetItemVoidVaultHook.Hook;
+            On.Terraria.Player.ItemSpaceForCofveve -= ItemSpaceForCofveveHook.Hook;
+            On.MagicStorage.Components.StorageHeart.RightClick -= StorageHeartRightClickHook.Hook;
+
             base.Unload();
         }
-
-        // Patch MagicStorage IL to change the Storage Heart right click handler to also work with
-        //  MSVoidBag.
-        private void HeartRightClickPatch(ILContext il) {
-            if (il == null) {
-                Logger.Error("ILContext null!");
-                return;
-            }
-
-            Logger.Debug("Patching MagicStorage IL...");
-
-            var c = new ILCursor(il);
-
-            if (!c.TryGotoNext(i => i.MatchCallOrCallvirt("Terraria.ModLoader.ModContent", "ItemType"))) {
-                Logger.Warn("IL patching failed! :(");
-            }
-            c = c.GotoPrev().GotoPrev();
-
-            var c2 = c.Clone();
-
-            // copy IL up to call
-            while (c2.Next.OpCode != OpCodes.Call) {
-                if (c2.Next.Operand != null) {
-                    c.Emit(c2.Next.OpCode, c2.Next.Operand);
-                } else {
-                    c.Emit(c2.Next.OpCode);
-                }
-
-                c2 = c2.GotoNext();
-            }
-
-            var method = typeof(ModContent).GetMethod("ItemType").MakeGenericMethod(typeof(MSVoidBag));
-
-            c.Emit(c2.Next.OpCode, method);
-            c2.GotoNext();
-            c.Emit(c2.Next.OpCode, c2.Next.Operand);
-
-            Logger.Debug("...MagicStorage IL patching complete!");
-        }
-
     }
 }
