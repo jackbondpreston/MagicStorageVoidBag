@@ -53,3 +53,17 @@ pipeline:
       files: release/*
     when:
       event: tag
+
+  github-release:
+    image: plugins/github-release
+    settings:
+      api_key:
+        from_secret: github-api-key
+      base_url: https://github.com/api/v3/
+      upload_url: https://github.com/api/uploads
+      files: release/*
+    environment:
+      - DRONE_REPO_OWNER=jackbondpreston
+      - CI_REPO_OWNER=jackbondpreston
+    when:
+      event: tag
