@@ -10,9 +10,26 @@ pipeline:
     commands:
       - git clone https://github.com/blushiemagic/MagicStorage.git
       - wget https://github.com/tModLoader/tModLoader/releases/latest/download/tModLoader.zip
-      - unzip tModLoader.zip -d tModLoader
+      - unzip -q tModLoader.zip -d tModLoader
       - rm tModLoader.zip
+      - ln -sf $CI_WORKSPACE/tModLoader/Libraries/Native/Linux/libSDL2-2.0.so.0 $CI_WORKSPACE/tModLoader/Libraries/Native/Linux/libSDL2.so
+      - >
+        echo "<Project ToolsVersion=\"14.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">
+            <Import Project=\"$CI_WORKSPACE/tModLoader/tMLMod.targets\" />
+        </Project>" > tModLoader.targets
+
   build:
-    image: mcr.microsoft.com/dotnet/sdk:latest
+    image: jackbondpreston/fna-alpine
     commands:
+      - |
+        echo "Shell: $SHELL"
+        echo "CI_WORKSPACE: $CI_WORKSPACE"
+      - cat tModLoader.targets
+      - cd MagicStorage && dotnet build -c Release || true
+      - cp bin/Release/net6.0/MagicStorage.dll .
+      - cd $CI_WORKSPACE
+      - cd MagicStorageVoidBag && dotnet build -c Release || true
+      - cp bin/Release/net6.0/MagicStorageVoidBag.dll .
+      - cd $CI_WORKSPACE
+      - cp ~/.local/share/Terraria/tModLoader/Mods/*.tmod .
       - ls
