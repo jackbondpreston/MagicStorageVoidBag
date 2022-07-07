@@ -1,17 +1,11 @@
-pipeline:
-  clone:
-    git:
-      image: woodpeckerci/plugin-git
+clone:
+  git:
+    image: woodpeckerci/plugin-git:latest
     settings:
-      - path: MagicStorageVoidBag
-    when:
-      branch: [ main, ci-testing ]
+      path: MagicStorageVoidBag
 
+pipeline:
   build:
-    image: mcr.microsoft.com/dotnet/sdk
+    image: mcr.microsoft.com/dotnet/sdk:latest
     commands:
       - ls
-    when:
-      branch: [ main, ci-testing ]
-
-branches: [ main, ci-testing ]
