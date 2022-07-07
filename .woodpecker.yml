@@ -3,6 +3,8 @@ clone:
     image: woodpeckerci/plugin-git:latest
     settings:
       path: MagicStorageVoidBag
+    when:
+      event: tag
 
 pipeline:
   fetch-deps:
@@ -17,6 +19,8 @@ pipeline:
         echo "<Project ToolsVersion=\"14.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">
             <Import Project=\"$CI_WORKSPACE/tModLoader/tMLMod.targets\" />
         </Project>" > tModLoader.targets
+    when:
+      event: tag
 
   build:
     image: jackbondpreston/fna-alpine
@@ -35,6 +39,8 @@ pipeline:
       - cp ~/.local/share/Terraria/tModLoader/Mods/MagicStorageVoidBag.tmod release/
       - cp MagicStorageVoidBag/MagicStorageVoidBag.dll release/
       - ls release
+    when:
+      event: tag
     
   gitea-release:
     image: plugins/gitea-release
