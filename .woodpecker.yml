@@ -4,14 +4,8 @@ pipeline:
       image: woodpeckerci/plugin-git
     settings:
       - path: MagicStorageVoidBag
-    when:
-      branch: [ main, ci-testing ]
 
   build:
     image: mcr.microsoft.com/dotnet/sdk
     commands:
       - ls
-    when:
-      branch: [ main, ci-testing ]
-
-branches: [ main, ci-testing ]
