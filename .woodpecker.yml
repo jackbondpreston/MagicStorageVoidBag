@@ -1,11 +1,53 @@
-pipeline:
-  clone:
-    git:
-      image: woodpeckerci/plugin-git
+clone:
+  git:
+    image: woodpeckerci/plugin-git:latest
     settings:
-      - path: MagicStorageVoidBag
+      path: MagicStorageVoidBag
+    when:
+      event: tag
+
+pipeline:
+  fetch-deps:
+    image: alpine/git:latest
+    commands:
+      - git clone https://github.com/blushiemagic/MagicStorage.git
+      - wget https://github.com/tModLoader/tModLoader/releases/latest/download/tModLoader.zip
+      - unzip -q tModLoader.zip -d tModLoader
+      - rm tModLoader.zip
+      - ln -sf $CI_WORKSPACE/tModLoader/Libraries/Native/Linux/libSDL2-2.0.so.0 $CI_WORKSPACE/tModLoader/Libraries/Native/Linux/libSDL2.so
+      - >
+        echo "<Project ToolsVersion=\"14.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">
+            <Import Project=\"$CI_WORKSPACE/tModLoader/tMLMod.targets\" />
+        </Project>" > tModLoader.targets
+    when:
+      event: tag
 
   build:
-    image: mcr.microsoft.com/dotnet/sdk
+    image: jackbondpreston/fna-alpine
     commands:
-      - ls
+      - |
+        echo "Shell: $SHELL"
+        echo "CI_WORKSPACE: $CI_WORKSPACE"
+      - cat tModLoader.targets
+      - cd MagicStorage && dotnet build -c Release || true
+      - cp bin/Release/net6.0/MagicStorage.dll .
+      - cd $CI_WORKSPACE
+      - cd MagicStorageVoidBag && dotnet build -c Release || true
+      - cp bin/Release/net6.0/MagicStorageVoidBag.dll .
+      - cd $CI_WORKSPACE
+      - mkdir release
+      - cp ~/.local/share/Terraria/tModLoader/Mods/MagicStorageVoidBag.tmod release/
+      - cp MagicStorageVoidBag/MagicStorageVoidBag.dll release/
+      - ls release
+    when:
+      event: tag
+    
+  gitea-release:
+    image: plugins/gitea-release
+    settings:
+      api_key:
+        from_secret: gitea-api-key
+      base_url: https://git.jackbondpreston.me
+      files: release/*
+    when:
+      event: tag
