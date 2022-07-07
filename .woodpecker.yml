@@ -1,0 +1,7 @@
+pipeline:
+  build:
+    image: mcr.microsoft.com/dotnet/sdk
+    commands:
+      - ls
+
+branches: [ main, ci-testing ]
