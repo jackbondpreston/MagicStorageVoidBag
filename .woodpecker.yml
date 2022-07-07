@@ -1,4 +1,10 @@
 pipeline:
+  clone:
+    git:
+      image: woodpeckerci/plugin-git
+    settings:
+      - path: MagicStorageVoidBag
+
   build:
     image: mcr.microsoft.com/dotnet/sdk
     commands:
