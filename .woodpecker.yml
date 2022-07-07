@@ -32,7 +32,9 @@ pipeline:
       - cd MagicStorage && dotnet build -c Release || true
       - cp bin/Release/net6.0/MagicStorage.dll .
       - cd $CI_WORKSPACE
-      - cd MagicStorageVoidBag && dotnet build -c Release || true
+      - cd MagicStorageVoidBag
+      - rm -rf .git
+      - dotnet build -c Release || true
       - cp bin/Release/net6.0/MagicStorageVoidBag.dll .
       - cd $CI_WORKSPACE
       - mkdir release
