@@ -5,6 +5,13 @@ clone:
       path: MagicStorageVoidBag
 
 pipeline:
+  fetch-deps:
+    image: alpine/git:latest
+    commands:
+      - git clone https://github.com/blushiemagic/MagicStorage.git
+      - wget https://github.com/tModLoader/tModLoader/releases/latest/download/tModLoader.zip
+      - unzip tModLoader.zip -d tModLoader
+      - rm tModLoader.zip
   build:
     image: mcr.microsoft.com/dotnet/sdk:latest
     commands:
