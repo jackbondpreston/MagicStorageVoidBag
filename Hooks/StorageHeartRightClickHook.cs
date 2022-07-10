@@ -13,9 +13,7 @@ namespace MagicStorageVoidBag.Hooks {
             Player player = Main.LocalPlayer;
             Item item = player.HeldItem;
 
-            if (item.ModItem == null) return false;
-
-            if (item.ModItem is Locator locator) {
+            if (!item.IsAir && item.ModItem is Locator locator) {
                 if (Main.tile[i, j].TileFrameX % 36 == 18) i--;
                 if (Main.tile[i, j].TileFrameY % 36 == 18) j--;
 
