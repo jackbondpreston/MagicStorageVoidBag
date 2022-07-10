@@ -12,10 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MagicStorage">
-      <HintPath>../MagicStorage/MagicStorage.dll</HintPath>
+      <HintPath>..\MagicStorage\MagicStorage.dll</HintPath>
     </Reference>
     <Reference Include="MagicStorageHooks">
-      <HintPath>lib/MagicStorageHooks.dll</HintPath>
+      <HintPath>lib\MagicStorage_Hooks.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
